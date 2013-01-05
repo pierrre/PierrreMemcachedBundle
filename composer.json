@@ -1,0 +1,21 @@
+{
+    "name": "pierrre/memcached-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony2 Pierrre Memcached Bundle",
+    "keywords": ["pierrre", "memcached", "symfony"],
+    "homepage": "http://github.com/pierrre/PierrreMemcachedBundle",
+    "authors": [
+        {"name": "Pierre Durand", "email": "pierredurand@gmail.com"}
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": "*"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "Pierrre\\MemcachedBundle": ""
+        }
+    },
+    "target-dir" : "Pierrre/MemcachedBundle"
+}
