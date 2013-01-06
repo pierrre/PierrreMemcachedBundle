@@ -1,0 +1,8 @@
+parameters:
+    pierrre_memcached.memcached.class: Memcached
+    pierrre_memcached.memcached_factory.class: Pierrre\MemcachedBundle\MemcachedFactory
+
+services:
+
+    pierrre_memcached.memcached_factory:
+        class: %pierrre_memcached.memcached_factory.class%

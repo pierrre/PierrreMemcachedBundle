@@ -2,8 +2,10 @@
 
 namespace Pierrre\MemcachedBundle\DependencyInjection;
 
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class PierrreMemcachedExtension extends Extension
@@ -13,23 +15,18 @@ class PierrreMemcachedExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
+
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $instances = $config['instances'];
-        foreach ($instances as $instanceName => $instance) {
-            $definition = new Definition('Memcached');
-
-            if (isset($connection['persistent_id'])) {
-                $definition->addArgument($instance['persistent_id']);
-            }
-
-            foreach ($instance['servers'] as $server) {
-                $definition->addMethodCall('addServer', array($server['host'], $server['port'], $server['weight']));
-            }
-
-            foreach ($instance['options'] as $optionName => $optionValue) {
-                $definition->addMethodCall('setOption', array($optionName, $optionValue));
-            }
+        foreach ($instances as $instanceName => $instanceConfig) {
+            $definition = new Definition();
+            $definition->setClass($container->getParameter('pierrre_memcached.memcached.class'));
+            $definition->setFactoryService('pierrre_memcached.memcached_factory');
+            $definition->setFactoryMethod('get');
+            $definition->setArguments(array($instanceConfig));
 
             $container->setDefinition($this->getAlias() . '.instance.' . $instanceName , $definition);
         }
