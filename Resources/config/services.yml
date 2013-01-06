@@ -6,3 +6,4 @@ services:
 
     pierrre_memcached.memcached_factory:
         class: %pierrre_memcached.memcached_factory.class%
+        public: false
