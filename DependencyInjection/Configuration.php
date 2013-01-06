@@ -17,8 +17,8 @@ class Configuration implements ConfigurationInterface
 
         $rootnode
             ->children()
-                ->scalarNode('default_connection')->end()
-                ->arrayNode('connections')
+                ->scalarNode('default_instance')->end()
+                ->arrayNode('instances')
                     ->requiresAtLeastOneElement()
                     ->useAttributeAsKey('name')
                     ->prototype('array')

@@ -15,7 +15,7 @@ class FlushCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $memcached = $this->getContainer()->get('pierrre_memcached.default_connection');
+        $memcached = $this->getContainer()->get('pierrre_memcached.default_instance');
         $memcached->flush();
     }
 }

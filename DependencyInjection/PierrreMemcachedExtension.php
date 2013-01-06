@@ -15,32 +15,32 @@ class PierrreMemcachedExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $connections = $config['connections'];
-        foreach ($connections as $connectionName => $connection) {
+        $instances = $config['instances'];
+        foreach ($instances as $instanceName => $instance) {
             $definition = new Definition('Memcached');
 
             if (isset($connection['persistent_id'])) {
-                $definition->addArgument($connection['persistent_id']);
+                $definition->addArgument($instance['persistent_id']);
             }
 
-            foreach ($connection['servers'] as $server) {
+            foreach ($instance['servers'] as $server) {
                 $definition->addMethodCall('addServer', array($server['host'], $server['port'], $server['weight']));
             }
 
-            foreach ($connection['options'] as $optionName => $optionValue) {
+            foreach ($instance['options'] as $optionName => $optionValue) {
                 $definition->addMethodCall('setOption', array($optionName, $optionValue));
             }
 
-            $container->setDefinition($this->getAlias() . '.connection.' . $connectionName , $definition);
+            $container->setDefinition($this->getAlias() . '.instance.' . $instanceName , $definition);
         }
 
-        if (isset($config['default_connection'])) {
-            $defaultConnectionName = $config['default_connection'];
+        if (isset($config['default_instance'])) {
+            $defaultInstanceName = $config['default_instance'];
         } else {
-            $connectionNames = array_keys($config['connections']);
-            $defaultConnectionName = array_pop($connectionNames);
+            $instanceNames = array_keys($config['instances']);
+            $defaultInstanceName = array_pop($instanceNames);
         }
 
-        $container->setAlias($this->getAlias() . '.default_connection', $this->getAlias() . '.connection.' . $defaultConnectionName);
+        $container->setAlias($this->getAlias() . '.default_instance', $this->getAlias() . '.instance.' . $defaultInstanceName);
     }
 }
