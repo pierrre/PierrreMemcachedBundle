@@ -37,7 +37,18 @@ class PierrreMemcachedExtension extends Extension
             $instanceNames = array_keys($config['instances']);
             $defaultInstanceName = array_pop($instanceNames);
         }
-
         $container->setAlias($this->getAlias() . '.default_instance', $this->getAlias() . '.instance.' . $defaultInstanceName);
+
+        if ($config['session']['enabled']) {
+            $loader->load('session.yml');
+
+            if (isset($config['session']['instance'])) {
+                $container->setAlias($this->getAlias() . '.session_instance', $this->getAlias() . '.instance.' . $config['session']['instance']);
+            } else {
+                $container->setAlias($this->getAlias() . '.session_instance', $this->getAlias() . '.default_instance');
+            }
+
+            $container->setParameter($this->getAlias() . '.session_handler.options', $config['session']['options']);
+        }
     }
 }

@@ -1,0 +1,8 @@
+parameters:
+    pierrre_memcached.session_handler.class: Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler
+
+services:
+
+    pierrre_memcached.session_handler:
+        class: %pierrre_memcached.session_handler.class%
+        arguments: [@pierrre_memcached.session_instance, %pierrre_memcached.session_handler.options%]
