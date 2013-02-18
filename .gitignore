@@ -2,3 +2,8 @@
 /.buildpath
 /.project
 /.settings
+
+/composer.lock
+/vendor
+
+/Tests/coverage
