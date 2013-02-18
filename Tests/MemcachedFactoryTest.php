@@ -58,4 +58,31 @@ class MemcachedFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($totalConnectionsStart, $totalConnectionsEnd);
     }
+
+    /**
+     * @coversNothing
+     */
+    public function testNonPersistentConnection()
+    {
+        $memcachedFactory = new MemcachedFactory();
+
+        $config = array(
+            'servers' => array(
+                array(
+                    'host' => 'localhost',
+                    'port' => '11211'
+                )
+            )
+        );
+
+        $memcached = $memcachedFactory->get($config);
+        $totalConnectionsStart = array_pop($memcached->getStats())['total_connections'];
+
+        for ($i = 0; $i < 10; $i++) {
+            $memcachedFactory->get($config);
+        }
+        $totalConnectionsEnd = array_pop($memcached->getStats())['total_connections'];
+
+        $this->assertGreaterThan($totalConnectionsStart, $totalConnectionsEnd);
+    }
 }
