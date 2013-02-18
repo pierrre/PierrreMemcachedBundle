@@ -25,7 +25,7 @@ class MemcachedFactoryTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             'options' => array(
-                \Memcached::OPT_COMPRESSION => true
+                \Memcached::OPT_COMPRESSION => false
             )
         );
         $memcached = $memcachedFactory->get($config);
@@ -36,7 +36,7 @@ class MemcachedFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($config['servers'][0]['host'], $server['host']);
         $this->assertEquals($config['servers'][0]['port'], $server['port']);
 
-        var_dump($memcached->getOption(\Memcached::OPT_COMPRESSION));
+        $this->assertEquals($config['options'][\Memcached::OPT_COMPRESSION], $memcached->getOption(\Memcached::OPT_COMPRESSION));
     }
 
     /**
